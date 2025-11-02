@@ -21,7 +21,7 @@ legacyForge {
     runs {
         client {
             client()
-            programArguments = ["--width", "1920", "--height", "1080"]
+            programArguments.addAll("--width", "1920", "--height", "1080")
         }
         data {
             data()
@@ -91,9 +91,6 @@ repositories {
 }
 
 dependencies {
-    // Mixin
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 
     jarJar(implementation("io.github.llamalad7:mixinextras-forge:0.5.0")) {
@@ -119,6 +116,7 @@ dependencies {
     // jei-1.20.1-forge-15.20.0.112
     modRuntimeOnly ("curse.maven:jei-238222:6600311")
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -134,7 +132,7 @@ tasks.named('processResources', ProcessResources).configure {
             forge_version          : forge_version,
             forge_version_range    : forge_version_range,
             loader_version_range   : loader_version_range,
-            create_version_range   : create_version_range,
+//            create_version_range   : create_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
