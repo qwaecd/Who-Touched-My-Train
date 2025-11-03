@@ -33,11 +33,16 @@ public abstract class CarriageContraptionEntityMixin {
             return;
         }
         String playerName = player.getName().getString();
-        if (who_touched_my_train$authorizedPlayers.contains(playerName)) {
+        if (who_touched_my_train$isAuthorizedPlayer(playerName)) {
             return;
         } else {
-            player.displayClientMessage(Component.translatable("message.wtmt.train_no_permission"), true);
+            player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
             ci.setReturnValue(false);
         }
+    }
+
+    @Unique
+    private boolean who_touched_my_train$isAuthorizedPlayer(String playerName) {
+        return who_touched_my_train$authorizedPlayers.contains(playerName);
     }
 }

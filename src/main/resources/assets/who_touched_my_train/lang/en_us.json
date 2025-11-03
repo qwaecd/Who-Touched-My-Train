@@ -1,3 +1,6 @@
 {
-  "message.wtmt.train_no_permission": "You do not have permission to interact with this train."
+  "item.who_touched_my_train.diamond_key": "Diamond Key",
+  "item.who_touched_my_train.gold_key": "Gold Key",
+  "item.who_touched_my_train.iron_key": "Iron Key",
+  "message.who_touched_my_train.train_no_permission": "You do not have permission to interact with this train"
 }
