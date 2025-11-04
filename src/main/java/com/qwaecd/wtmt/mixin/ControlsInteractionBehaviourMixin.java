@@ -41,7 +41,7 @@ public abstract class ControlsInteractionBehaviourMixin {
 
         if (itemInHand.getItem() instanceof TrainKey trainKey) {
             trainKey.onControls(itemInHand, player, infoProvider);
-            return;
+            ci.setReturnValue(true);
         }
 
         boolean hasOwner = infoProvider.hasOwner$who_touched_my_train();
@@ -56,14 +56,14 @@ public abstract class ControlsInteractionBehaviourMixin {
                     infoProvider.setOwnerPlayerName$who_touched_my_train(playerName);
                     player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_owner"), true);
                 }
-                return;
+                ci.setReturnValue(true);
             }
         }
 
 
         if (!infoProvider.hasPermission$who_touched_my_train(playerName)) {
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
-            ci.setReturnValue(false);
+            ci.setReturnValue(true);
         }
     }
 }

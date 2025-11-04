@@ -1,9 +1,11 @@
 package com.qwaecd.wtmt.mixin;
 
 
-import com.qwaecd.wtmt.api.CarriageAuthData;
+import com.qwaecd.wtmt.data.CarriageAuthData;
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.network.AllSerializers;
+import com.qwaecd.wtmt.server.AuthReq;
+import com.qwaecd.wtmt.server.TrainEntityAuthRequest;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
@@ -21,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collection;
+import java.util.UUID;
 
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -55,7 +58,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
 
         player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
-        ci.setReturnValue(false);
+        ci.setReturnValue(true);
     }
 
     @Inject(
@@ -99,8 +102,19 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
     }
 
-    @Unique
-    private CarriageAuthData getAuthData$who_touched_my_train() {
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void onTick(CallbackInfo ci) {
+        if (TrainEntityAuthRequest.containsRequest(this.uuid)) {
+            AuthReq authReq = TrainEntityAuthRequest.pollRequest(this.uuid);
+            while (authReq != null) {
+                this.authorizePlayer$who_touched_my_train(authReq.playerName);
+                authReq = TrainEntityAuthRequest.pollRequest(this.uuid);
+            }
+        }
+    }
+
+    @Override
+    public CarriageAuthData getAuthData$who_touched_my_train() {
         return entityData.get(AUTH_DATA$who_touched_my_train);
     }
 
@@ -161,5 +175,10 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.setPublic();
         entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+    }
+
+    @Override
+    public UUID getEntityUUID$who_touched_my_train() {
+        return this.uuid;
     }
 }

@@ -12,7 +12,7 @@ public class IronTrainKey extends TrainKey {
     }
 
     @Override
-    public void onControls(ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
+    public void onControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
 
     }
 }

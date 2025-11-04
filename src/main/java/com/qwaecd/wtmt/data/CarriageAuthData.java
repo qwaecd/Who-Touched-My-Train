@@ -1,4 +1,4 @@
-package com.qwaecd.wtmt.api;
+package com.qwaecd.wtmt.data;
 
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -9,6 +9,9 @@ import java.util.Set;
 public class CarriageAuthData {
     private String ownerPlayerName = "";
     private final Set<String> authorizedPlayers = new HashSet<>();
+
+    // 无需同步, 0 是默认值 不使用
+    private long generation = 1L;
 
     public void write(FriendlyByteBuf buffer) {
         if (this.ownerPlayerName == null) {
@@ -48,6 +51,7 @@ public class CarriageAuthData {
     }
 
     public void setOwnerPlayerName(String ownerPlayerName) {
+        this.generation++;
         if (ownerPlayerName == null) {
             this.ownerPlayerName = "";
             return;
@@ -79,6 +83,10 @@ public class CarriageAuthData {
         this.ownerPlayerName = newData.ownerPlayerName;
         this.authorizedPlayers.clear();
         this.authorizedPlayers.addAll(newData.authorizedPlayers);
+    }
+
+    public long getGeneration() {
+        return this.generation;
     }
 
     public static class StringSyncHelper {

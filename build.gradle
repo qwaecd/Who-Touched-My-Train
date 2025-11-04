@@ -37,6 +37,7 @@ legacyForge {
         }
         server {
             server()
+            programArguments.addAll("--nogui")
         }
     }
 

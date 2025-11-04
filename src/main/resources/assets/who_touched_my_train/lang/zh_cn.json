@@ -1,10 +1,12 @@
 {
-  "message.who_touched_my_train.set_owner": "成功为列车上锁。",
+  "message.who_touched_my_train.set_owner": "成功为列车上锁",
   "who_touched_my_train.wtmt_tab": "机械动力: 谁动了我的列车！",
   "item.who_touched_my_train.train_lock": "列车锁",
   "item.who_touched_my_train.diamond_key": "钻石钥匙",
   "item.who_touched_my_train.gold_key": "金钥匙",
   "item.who_touched_my_train.iron_key": "铁钥匙",
   "message.who_touched_my_train.train_no_permission": "你没有权限操作这辆列车",
-  "message.who_touched_my_train.set_public": "已解锁"
+  "message.who_touched_my_train.set_public": "已解锁",
+  "message.who_touched_my_train.successfully_copied_key": "成功刻印钥匙",
+  "who_touched_my_train.item.gold_train_key.tooltip": "主人: %s"
 }

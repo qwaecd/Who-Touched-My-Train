@@ -1,6 +1,6 @@
 package com.qwaecd.wtmt.network;
 
-import com.qwaecd.wtmt.api.CarriageAuthData;
+import com.qwaecd.wtmt.data.CarriageAuthData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 

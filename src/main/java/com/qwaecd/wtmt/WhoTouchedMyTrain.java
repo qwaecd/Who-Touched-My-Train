@@ -3,6 +3,7 @@ package com.qwaecd.wtmt;
 import com.mojang.logging.LogUtils;
 import com.qwaecd.wtmt.init.AllModItems;
 import com.qwaecd.wtmt.network.AllSerializers;
+import com.qwaecd.wtmt.network.Channel;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -19,5 +20,6 @@ public class WhoTouchedMyTrain
         IEventBus modEventBus = context.getModEventBus();
         AllModItems.registerAllItems(modEventBus);
         AllSerializers.register(modEventBus);
+        Channel.register();
     }
 }

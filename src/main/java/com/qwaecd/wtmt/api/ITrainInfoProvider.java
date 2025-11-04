@@ -1,8 +1,17 @@
 package com.qwaecd.wtmt.api;
 
+import com.qwaecd.wtmt.data.CarriageAuthData;
+
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public interface ITrainInfoProvider {
+    default CarriageAuthData getAuthData$who_touched_my_train() {
+        throw new UnsupportedOperationException();
+    }
+    default UUID getEntityUUID$who_touched_my_train() {
+        throw new UnsupportedOperationException();
+    }
     default boolean hasPermission$who_touched_my_train(String playerName) {
         return true;
     }

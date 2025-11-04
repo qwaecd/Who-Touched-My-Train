@@ -6,5 +6,7 @@
   "item.who_touched_my_train.gold_key": "Gold Key",
   "item.who_touched_my_train.iron_key": "Iron Key",
   "message.who_touched_my_train.train_no_permission": "You do not have permission to interact with this train",
-  "message.who_touched_my_train.set_public": "Train is now public"
+  "message.who_touched_my_train.set_public": "Train is now public",
+  "message.who_touched_my_train.successfully_copied_key": "Successfully copied key",
+  "who_touched_my_train.item.gold_train_key.tooltip": "Owner: %s"
 }
