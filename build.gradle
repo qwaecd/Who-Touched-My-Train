@@ -26,7 +26,11 @@ legacyForge {
     runs {
         client {
             client()
-            programArguments.addAll("--width", "1920", "--height", "1080")
+            programArguments.addAll("--width", "1920", "--height", "1080", "--username", "dev")
+        }
+        client2 {
+            client()
+            programArguments.addAll("--width", "1280", "--height", "720", "--username", "player2")
         }
         data {
             data()

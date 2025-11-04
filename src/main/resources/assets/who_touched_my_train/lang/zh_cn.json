@@ -5,5 +5,6 @@
   "item.who_touched_my_train.diamond_key": "钻石钥匙",
   "item.who_touched_my_train.gold_key": "金钥匙",
   "item.who_touched_my_train.iron_key": "铁钥匙",
-  "message.who_touched_my_train.train_no_permission": "你没有权限操作这辆列车"
+  "message.who_touched_my_train.train_no_permission": "你没有权限操作这辆列车",
+  "message.who_touched_my_train.set_public": "已解锁"
 }

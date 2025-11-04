@@ -18,8 +18,11 @@ public class CarriageAuthData {
         int size = this.authorizedPlayers.size();
         buffer.writeInt(size);
         for (String playerName : this.authorizedPlayers) {
-            StringSyncHelper.writeString(buffer, playerName);
+            if (playerName != null) {
+                StringSyncHelper.writeString(buffer, playerName);
+            }
         }
+//        System.out.println("Written CarriageAuthData: owner=" + this.ownerPlayerName + ", authorizedPlayers=" + this.authorizedPlayers);
     }
 
     public void read(FriendlyByteBuf buffer) {
@@ -30,6 +33,7 @@ public class CarriageAuthData {
             String playerName = StringSyncHelper.readString(buffer);
             this.authorizedPlayers.add(playerName);
         }
+//        System.out.println("Read CarriageAuthData: owner=" + this.ownerPlayerName + ", authorizedPlayers=" + this.authorizedPlayers);
     }
 
     public CarriageAuthData copy() {

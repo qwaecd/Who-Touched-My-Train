@@ -95,6 +95,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
     )
     private void onSyncedDataUpdatedMixin(EntityDataAccessor<?> key, CallbackInfo ci) {
         if (AUTH_DATA$who_touched_my_train.equals(key)) {
+            // do nothing for now
         }
     }
 
@@ -129,7 +130,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.setOwnerPlayerName(playerName);
         this.authorizePlayer$who_touched_my_train(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
     }
 
     @Override
@@ -142,7 +143,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
     public void authorizePlayer$who_touched_my_train(String playerName) {
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.authorizePlayer(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
     }
 
     @Override
@@ -152,13 +153,13 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
             return;
         }
         data.deauthorizePlayer(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
     }
 
     @Override
     public void setPublic$who_touched_my_train() {
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.setPublic();
-        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
     }
 }
