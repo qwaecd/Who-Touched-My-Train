@@ -129,7 +129,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.setOwnerPlayerName(playerName);
         this.authorizePlayer$who_touched_my_train(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
     }
 
     @Override
@@ -142,7 +142,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
     public void authorizePlayer$who_touched_my_train(String playerName) {
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.authorizePlayer(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
     }
 
     @Override
@@ -152,13 +152,13 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
             return;
         }
         data.deauthorizePlayer(playerName);
-        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
     }
 
     @Override
     public void setPublic$who_touched_my_train() {
         CarriageAuthData data = getAuthData$who_touched_my_train();
         data.setPublic();
-        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, false);
     }
 }

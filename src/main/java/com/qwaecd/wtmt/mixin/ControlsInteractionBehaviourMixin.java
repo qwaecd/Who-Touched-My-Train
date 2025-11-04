@@ -40,11 +40,13 @@ public abstract class ControlsInteractionBehaviourMixin {
         }
         boolean hasOwner = infoProvider.hasOwner$who_touched_my_train();
         String playerName = player.getName().getString();
-//        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
-//        System.out.println("owner: " + ownerName + ", hasOwner: " + hasOwner);
+        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
+        System.out.println("owner: " + ownerName + ", hasOwner: " + hasOwner);
         if (!hasOwner) {
             infoProvider.setOwnerPlayerName$who_touched_my_train(playerName);
-            player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_owner"), true);
+            if (!player.level().isClientSide) {
+                player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_owner"), true);
+            }
             return;
         }
 

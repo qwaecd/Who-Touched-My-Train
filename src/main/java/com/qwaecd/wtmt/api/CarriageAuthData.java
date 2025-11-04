@@ -3,6 +3,7 @@ package com.qwaecd.wtmt.api;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class CarriageAuthData {
@@ -87,5 +88,18 @@ public class CarriageAuthData {
             buffer.writeInt(length);
             buffer.writeUtf(value, length);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarriageAuthData that = (CarriageAuthData) o;
+        return Objects.equals(ownerPlayerName, that.ownerPlayerName) && Objects.equals(authorizedPlayers, that.authorizedPlayers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ownerPlayerName, authorizedPlayers);
     }
 }
