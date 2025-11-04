@@ -17,6 +17,11 @@ legacyForge {
     // Validate AT files and raise errors when they have invalid targets
     // This option is false by default, but turning it on is recommended
     validateAccessTransformers = true
+    interfaceInjectionData.from "interfaces.json"
+
+    interfaceInjectionData {
+        publish file("interfaces.json")
+    }
 
     runs {
         client {

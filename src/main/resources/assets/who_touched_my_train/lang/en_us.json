@@ -1,5 +1,7 @@
 {
+  "message.who_touched_my_train.set_owner": "You are now the owner of this train.",
   "who_touched_my_train.wtmt_tab": "Create: Who Touched My Train!",
+  "item.who_touched_my_train.train_lock": "Train Lock",
   "item.who_touched_my_train.diamond_key": "Diamond Key",
   "item.who_touched_my_train.gold_key": "Gold Key",
   "item.who_touched_my_train.iron_key": "Iron Key",

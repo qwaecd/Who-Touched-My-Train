@@ -1,0 +1,5 @@
+{
+  "com/simibubi/create/content/trains/entity/CarriageContraptionEntity": [
+    "com.qwaecd.wtmt.mixin.api.ITrainInfoProvider"
+  ]
+}

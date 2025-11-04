@@ -1,24 +1,40 @@
 package com.qwaecd.wtmt.mixin;
 
 
+import com.qwaecd.wtmt.api.CarriageAuthData;
+import com.qwaecd.wtmt.api.ITrainInfoProvider;
+import com.qwaecd.wtmt.network.AllSerializers;
+import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
+
+@SuppressWarnings("FieldMayBeFinal")
 @Mixin(value = CarriageContraptionEntity.class, remap = false)
-public abstract class CarriageContraptionEntityMixin {
-
+public abstract class CarriageContraptionEntityMixin extends OrientedContraptionEntity implements ITrainInfoProvider {
+    @SuppressWarnings("WrongEntityDataParameterClass")
     @Unique
-    private Set<String> who_touched_my_train$authorizedPlayers = new HashSet<>();
+    private static final EntityDataAccessor<CarriageAuthData> AUTH_DATA$who_touched_my_train =
+            SynchedEntityData.defineId(CarriageContraptionEntity.class, AllSerializers.AUTH_DATA);
+
+
+    public CarriageContraptionEntityMixin(EntityType<?> type, Level world) {
+        super(type, world);
+    }
 
     @Inject(
             method = "startControlling",
@@ -33,16 +49,116 @@ public abstract class CarriageContraptionEntityMixin {
             return;
         }
         String playerName = player.getName().getString();
-        if (who_touched_my_train$isAuthorizedPlayer(playerName)) {
+
+        if (this.hasPermission$who_touched_my_train(playerName)) {
             return;
-        } else {
-            player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
-            ci.setReturnValue(false);
+        }
+
+        player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
+        ci.setReturnValue(false);
+    }
+
+    @Inject(
+            method = "control",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true,
+            remap = false
+    )
+    private void controlMixin(BlockPos controlsLocalPos, Collection<Integer> heldControls, Player player, CallbackInfoReturnable<Boolean> ci) {
+        // noinspection resource
+        if (level().isClientSide()) {
+            return;
+        }
+        if (player == null || player.isSpectator()) {
+            return;
+        }
+        String playerName = player.getName().getString();
+        if (this.hasPermission$who_touched_my_train(playerName)) {
+            return;
+        }
+        ci.setReturnValue(false);
+    }
+
+    @Inject(
+            method = "defineSynchedData",
+            at = @At("RETURN")
+    )
+    private void defineSynchedDataMixin(CallbackInfo ci) {
+        entityData.define(AUTH_DATA$who_touched_my_train, new CarriageAuthData());
+    }
+
+    @Inject(
+            method = "onSyncedDataUpdated",
+            at = @At("TAIL")
+    )
+    private void onSyncedDataUpdatedMixin(EntityDataAccessor<?> key, CallbackInfo ci) {
+        if (AUTH_DATA$who_touched_my_train.equals(key)) {
         }
     }
 
     @Unique
-    private boolean who_touched_my_train$isAuthorizedPlayer(String playerName) {
-        return who_touched_my_train$authorizedPlayers.contains(playerName);
+    private CarriageAuthData getAuthData$who_touched_my_train() {
+        return entityData.get(AUTH_DATA$who_touched_my_train);
+    }
+
+    @Override
+    public boolean hasPermission$who_touched_my_train(String playerName) {
+        if (!this.hasOwner$who_touched_my_train()) {
+            return true;
+        }
+
+        return hasAuthorizedPlayer$who_touched_my_train(playerName);
+    }
+
+    @Override
+    public boolean hasOwner$who_touched_my_train() {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        return data.getOwnerPlayerName() != null && !data.getOwnerPlayerName().isEmpty();
+    }
+
+    @Override
+    public String getOwnerPlayerName$who_touched_my_train() {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        return data.getOwnerPlayerName();
+    }
+
+    @Override
+    public void setOwnerPlayerName$who_touched_my_train(String playerName) {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        data.setOwnerPlayerName(playerName);
+        this.authorizePlayer$who_touched_my_train(playerName);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+    }
+
+    @Override
+    public boolean hasAuthorizedPlayer$who_touched_my_train(String playerName) {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        return data.hasAuthorizedPlayer(playerName);
+    }
+
+    @Override
+    public void authorizePlayer$who_touched_my_train(String playerName) {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        data.authorizePlayer(playerName);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+    }
+
+    @Override
+    public void deauthorizePlayer$who_touched_my_train(String playerName) {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        if (playerName.equals(data.getOwnerPlayerName())) {
+            return;
+        }
+        data.deauthorizePlayer(playerName);
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
+    }
+
+    @Override
+    public void setPublic$who_touched_my_train() {
+        CarriageAuthData data = getAuthData$who_touched_my_train();
+        data.setPublic();
+        entityData.set(AUTH_DATA$who_touched_my_train, data, true);
     }
 }

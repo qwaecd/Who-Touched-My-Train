@@ -1,5 +1,6 @@
 package com.qwaecd.wtmt.init;
 
+import com.qwaecd.wtmt.item.TrainLock;
 import com.qwaecd.wtmt.item.key.DiamondTrainKey;
 import com.qwaecd.wtmt.item.key.GoldTrainKey;
 import com.qwaecd.wtmt.item.key.IronTrainKey;
@@ -24,6 +25,7 @@ public final class AllModItems {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
+    public static final RegistryObject<Item> TRAIN_LOCK = register("train_lock", () -> new TrainLock(new Item.Properties()));
     public static final RegistryObject<Item> GOLD_KEY = register("gold_key", () -> new GoldTrainKey(new Item.Properties()));
     public static final RegistryObject<Item> IRON_KEY = register("iron_key", () -> new IronTrainKey(new Item.Properties()));
     public static final RegistryObject<Item> DIAMOND_KEY = register("diamond_key", () -> new DiamondTrainKey(new Item.Properties()));
