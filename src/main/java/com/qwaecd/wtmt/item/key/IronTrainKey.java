@@ -43,9 +43,12 @@ public class IronTrainKey extends TrainKey {
         CompoundTag tag = itemInHand.getTag();
         String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
         AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
-        if (tag == null && playerName.equals(ownerName)) {
+        if (playerName.equals(ownerName)) {
             // 刻钥匙
-            processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
+            //noinspection resource
+            if (!player.level().isClientSide()) {
+                processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
+            }
             return;
         }
 
