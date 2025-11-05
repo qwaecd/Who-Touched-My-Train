@@ -43,8 +43,12 @@ public class GoldTrainKey extends TrainKey {
         CompoundTag tag = itemInHand.getTag();
         String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
         AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
-        if (tag == null) {
+        if (tag == null && playerName.equals(ownerName)) {
+            // 刻钥匙
             processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
+            return;
+        }
+        if (tag == null) {
             return;
         }
         CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);

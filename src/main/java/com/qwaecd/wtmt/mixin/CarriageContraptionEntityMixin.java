@@ -4,8 +4,6 @@ package com.qwaecd.wtmt.mixin;
 import com.qwaecd.wtmt.data.CarriageAuthData;
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.network.AllSerializers;
-import com.qwaecd.wtmt.server.AuthReq;
-import com.qwaecd.wtmt.server.TrainEntityAuthRequest;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
@@ -99,17 +97,6 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
     private void onSyncedDataUpdatedMixin(EntityDataAccessor<?> key, CallbackInfo ci) {
         if (AUTH_DATA$who_touched_my_train.equals(key)) {
             // do nothing for now
-        }
-    }
-
-//    @Inject(method = "tick", at = @At("RETURN"))
-    private void onTick(CallbackInfo ci) {
-        if (TrainEntityAuthRequest.containsRequest(this.uuid)) {
-            AuthReq authReq = TrainEntityAuthRequest.pollRequest(this.uuid);
-            while (authReq != null) {
-                this.authorizePlayer$who_touched_my_train(authReq.playerName);
-                authReq = TrainEntityAuthRequest.pollRequest(this.uuid);
-            }
         }
     }
 
