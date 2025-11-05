@@ -102,7 +102,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
     }
 
-    @Inject(method = "tick", at = @At("RETURN"))
+//    @Inject(method = "tick", at = @At("RETURN"))
     private void onTick(CallbackInfo ci) {
         if (TrainEntityAuthRequest.containsRequest(this.uuid)) {
             AuthReq authReq = TrainEntityAuthRequest.pollRequest(this.uuid);

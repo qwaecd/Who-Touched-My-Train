@@ -8,5 +8,6 @@
   "message.who_touched_my_train.train_no_permission": "You do not have permission to interact with this train",
   "message.who_touched_my_train.set_public": "Train is now public",
   "message.who_touched_my_train.successfully_copied_key": "Successfully copied key",
+  "message.who_touched_my_train.successfully_authorized": "Successfully authorized",
   "who_touched_my_train.item.gold_train_key.tooltip": "Owner: %s"
 }

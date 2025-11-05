@@ -28,8 +28,7 @@ public class AuthComponentData {
         this.generation = generation;
     }
 
-    public static AuthComponentData read(CompoundTag rootTag) {
-        CompoundTag authComponent = rootTag.getCompound(COMPONENT_NAME);
+    public static AuthComponentData read(CompoundTag authComponent) {
         UUID uuid = authComponent.getUUID("CarriageUUID");
         String ownerName = authComponent.getString(OWNER_NAME);
         long generation = authComponent.getLong(GENERATION);

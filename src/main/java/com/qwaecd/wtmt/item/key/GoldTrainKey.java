@@ -2,8 +2,6 @@ package com.qwaecd.wtmt.item.key;
 
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.data.AuthComponentData;
-import com.qwaecd.wtmt.network.Channel;
-import com.qwaecd.wtmt.network.packet.C2SRequestAuthorizePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -42,32 +40,28 @@ public class GoldTrainKey extends TrainKey {
             return;
         }
         String playerName = player.getName().getString();
+        CompoundTag tag = itemInHand.getTag();
+        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
+        AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
+        if (tag == null) {
+            processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
+            return;
+        }
+        CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
+        if (keyAuthTag.isEmpty()) {
+            return;
+        }
+        AuthComponentData keyAuthData = AuthComponentData.read(keyAuthTag);
+        if (trainAuthData.isOverdue(keyAuthData.getGeneration())) {
+            return;
+        }
 
-        //noinspection resource
-        if (!player.level().isClientSide()) {
-            String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
-            CompoundTag tag = itemInHand.getTag();
-            AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
-            if (tag == null) {
-                if (playerName.equals(ownerName)) {
-                    CompoundTag authTag = itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME);
-                    processKey(trainAuthData, authTag, player);
-                }
-                return;
-            }
-            CompoundTag authTag = itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME);
-
-            if (infoProvider.hasPermission$who_touched_my_train(playerName))
-                return;
-
-            AuthComponentData keyAuthData = AuthComponentData.read(authTag);
-            if (trainAuthData.isOverdue(keyAuthData.getGeneration())) {
-                return;
-            }
-
-            if (verify(trainAuthData, keyAuthData)) {
-//                Channel.sendToServer(C2SRequestAuthorizePacket.create(playerName, trainAuthData.getCarriageUUID()));
+        if (verify(trainAuthData, keyAuthData)) {
+            //noinspection resource
+            if (!player.level().isClientSide()) {
+                itemInHand.shrink(1);
                 infoProvider.authorizePlayer$who_touched_my_train(playerName);
+                player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_authorized"), true);
             }
         }
     }
@@ -103,7 +97,7 @@ public class GoldTrainKey extends TrainKey {
     private void processKey(AuthComponentData authData, CompoundTag authTag, Player player) {
         // 刻钥匙
         authData.write(authTag);
-        player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_copied_key"), false);
+        player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_copied_key"), true);
     }
 
     private void clearKey(ItemStack itemStack) {

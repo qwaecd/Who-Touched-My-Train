@@ -8,5 +8,6 @@
   "message.who_touched_my_train.train_no_permission": "你没有权限操作这辆列车",
   "message.who_touched_my_train.set_public": "已解锁",
   "message.who_touched_my_train.successfully_copied_key": "成功刻印钥匙",
+  "message.who_touched_my_train.successfully_authorized": "验证成功",
   "who_touched_my_train.item.gold_train_key.tooltip": "主人: %s"
 }
