@@ -66,7 +66,7 @@ public class CarriageAuthData implements IAuthDataAccessor {
             return;
         }
         this.ownerPlayerName = ownerPlayerName;
-        this.permissionLevel = TrainPermissionLevel.PROTECTED;
+        this.permissionLevel = TrainPermissionLevel.PRIVATE;
         this.isDirty = true;
     }
 

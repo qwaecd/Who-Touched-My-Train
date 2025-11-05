@@ -2,7 +2,6 @@ package com.qwaecd.wtmt.item;
 
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.api.TrainPermissionLevel;
-import com.qwaecd.wtmt.data.CarriageAuthData;
 import com.qwaecd.wtmt.data.IAuthDataAccessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +38,8 @@ public class TrainLock extends Item {
         player.displayClientMessage(
                 Component.translatable(
                         "message.who_touched_my_train.lock_state_changed",
-                        authData.getPermissionLevel().name().toLowerCase())
+                        Component.translatable("message.who_touched_my_train.lock_state_level." + authData.getPermissionLevel().name().toLowerCase())
+                        )
         , true);
     }
 }

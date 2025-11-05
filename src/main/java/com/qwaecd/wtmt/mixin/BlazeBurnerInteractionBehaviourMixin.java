@@ -28,7 +28,7 @@ public abstract class BlazeBurnerInteractionBehaviourMixin {
         String playerName = player.getName().getString();
         if (!infoProvider.hasUsePermission$who_touched_my_train(playerName)) {
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
-            ci.setReturnValue(false);
+            ci.setReturnValue(true);
         }
     }
 }

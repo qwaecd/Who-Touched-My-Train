@@ -2,7 +2,6 @@
   "message.who_touched_my_train.set_owner": "You are now the owner of this train.",
   "who_touched_my_train.wtmt_tab": "Create: Who Touched My Train!",
   "item.who_touched_my_train.train_lock": "Train Lock",
-  "item.who_touched_my_train.diamond_key": "Diamond Key",
   "item.who_touched_my_train.gold_key": "Gold Key",
   "item.who_touched_my_train.iron_key": "Iron Key",
   "message.who_touched_my_train.train_no_permission": "You do not have permission to interact with this train",
@@ -10,5 +9,8 @@
   "message.who_touched_my_train.successfully_copied_key": "Successfully copied key",
   "message.who_touched_my_train.successfully_authorized": "Successfully authorized",
   "message.who_touched_my_train.lock_state_changed": "Changed train lock state to: %s",
+  "message.who_touched_my_train.lock_state_level.private": "private",
+  "message.who_touched_my_train.lock_state_level.protected": "protected",
+  "message.who_touched_my_train.lock_state_level.public": "public",
   "who_touched_my_train.item.gold_train_key.tooltip": "Owner: %s"
 }
