@@ -27,7 +27,7 @@ import java.util.UUID;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-@Mixin(value = CarriageContraptionEntity.class, remap = false)
+@Mixin(value = CarriageContraptionEntity.class)
 public abstract class CarriageContraptionEntityMixin extends OrientedContraptionEntity implements ITrainInfoProvider {
     @SuppressWarnings("WrongEntityDataParameterClass")
     @Unique
@@ -99,13 +99,13 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
     }
 
-    @Inject(method = "writeAdditional", at = @At("TAIL"))
+    @Inject(method = "writeAdditional", at = @At("TAIL"), remap = false)
     private void writeAdditionalMixin(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
         CarriageAuthData authData = this.getAuthData$who_touched_my_train();
         authData.write(compound);
     }
 
-    @Inject(method = "readAdditional", at = @At("TAIL"))
+    @Inject(method = "readAdditional", at = @At("TAIL"), remap = false)
     private void readAdditionalMixin(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
         CarriageAuthData authData = this.getAuthData$who_touched_my_train();
         authData.read(compound);
