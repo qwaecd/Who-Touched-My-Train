@@ -8,6 +8,7 @@ import com.qwaecd.wtmt.network.AllSerializers;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -96,6 +97,18 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         if (AUTH_DATA$who_touched_my_train.equals(key)) {
             // do nothing for now
         }
+    }
+
+    @Inject(method = "writeAdditional", at = @At("TAIL"))
+    private void writeAdditionalMixin(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
+        CarriageAuthData authData = this.getAuthData$who_touched_my_train();
+        authData.write(compound);
+    }
+
+    @Inject(method = "readAdditional", at = @At("TAIL"))
+    private void readAdditionalMixin(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
+        CarriageAuthData authData = this.getAuthData$who_touched_my_train();
+        authData.read(compound);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))

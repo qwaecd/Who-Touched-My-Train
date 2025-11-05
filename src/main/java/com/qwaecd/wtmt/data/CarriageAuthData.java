@@ -1,6 +1,7 @@
 package com.qwaecd.wtmt.data;
 
 import com.qwaecd.wtmt.api.TrainPermissionLevel;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.Set;
 public class CarriageAuthData implements IAuthDataAccessor {
     private String ownerPlayerName = "";
     private final Set<String> authorizedPlayers = new HashSet<>();
+    public static final String AUTH_PLAYER_KEY = "AuthorizedPlayers";
     private TrainPermissionLevel permissionLevel = TrainPermissionLevel.PUBLIC;
 
     // 无需同步, 0 是默认值 不使用
@@ -32,6 +34,37 @@ public class CarriageAuthData implements IAuthDataAccessor {
         }
 //        System.out.println("Written CarriageAuthData: owner=" + this.ownerPlayerName + ", authorizedPlayers=" + this.authorizedPlayers);
     }
+
+    public void write(CompoundTag compound) {
+        compound.putString("OwnerPlayerName", this.ownerPlayerName);
+        compound.putInt("PermissionLevel", this.permissionLevel.getLevel());
+        compound.putLong("Generation", this.generation);
+        CompoundTag authPlayersTag = new CompoundTag();
+        int index = 0;
+        for (String playerName : this.authorizedPlayers) {
+            if (playerName != null) {
+                authPlayersTag.putString(String.valueOf(index), playerName);
+                index++;
+            }
+        }
+        compound.putInt("AuthorizedPlayerCount", index);
+        compound.put(AUTH_PLAYER_KEY, authPlayersTag);
+    }
+
+    public void read(CompoundTag compound) {
+        this.ownerPlayerName = compound.getString("OwnerPlayerName");
+        this.permissionLevel = TrainPermissionLevel.fromLevel(compound.getInt("PermissionLevel"));
+        this.generation = compound.getLong("Generation");
+        CompoundTag authPlayersTag = compound.getCompound(AUTH_PLAYER_KEY);
+        int size = compound.getInt("AuthorizedPlayerCount");
+        this.authorizedPlayers.clear();
+        for (int i = 0; i < size; i++) {
+            String playerName = authPlayersTag.getString(String.valueOf(i));
+            this.authorizedPlayers.add(playerName);
+        }
+        this.isDirty = true;
+    }
+
 
     public void read(FriendlyByteBuf buffer) {
         this.permissionLevel = TrainPermissionLevel.fromLevel(buffer.readInt());

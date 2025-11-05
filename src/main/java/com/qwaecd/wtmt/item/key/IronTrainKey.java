@@ -52,7 +52,7 @@ public class IronTrainKey extends TrainKey {
             return;
         }
 
-        if (infoProvider.hasUsePermission$who_touched_my_train(playerName) || tag == null)
+        if (infoProvider.hasAuthorizedPlayer$who_touched_my_train(playerName) || tag == null)
             return;
 
         CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
