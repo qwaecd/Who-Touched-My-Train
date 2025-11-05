@@ -1,6 +1,7 @@
 package com.qwaecd.wtmt.mixin;
 
 
+import com.qwaecd.wtmt.api.TrainPermissionLevel;
 import com.qwaecd.wtmt.data.CarriageAuthData;
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.network.AllSerializers;
@@ -51,12 +52,10 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
         String playerName = player.getName().getString();
 
-        if (this.hasPermission$who_touched_my_train(playerName)) {
-            return;
+        if (!this.hasUsePermission$who_touched_my_train(playerName)) {
+            player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
+            ci.setReturnValue(true);
         }
-
-        player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
-        ci.setReturnValue(true);
     }
 
     @Inject(
@@ -76,10 +75,9 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
             return;
         }
         String playerName = player.getName().getString();
-        if (this.hasPermission$who_touched_my_train(playerName)) {
-            return;
+        if (!this.hasUsePermission$who_touched_my_train(playerName)) {
+            ci.setReturnValue(false);
         }
-        ci.setReturnValue(false);
     }
 
     @Inject(
@@ -100,14 +98,28 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
         }
     }
 
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickMixin(CallbackInfo ci) {
+        CarriageAuthData authData = this.getAuthData$who_touched_my_train();
+        //noinspection resource
+        if (authData.isDirty() && !level().isClientSide()) {
+            authData.setDirty(false);
+            entityData.set(AUTH_DATA$who_touched_my_train, authData, true);
+        }
+    }
+
     @Override
     public CarriageAuthData getAuthData$who_touched_my_train() {
         return entityData.get(AUTH_DATA$who_touched_my_train);
     }
 
     @Override
-    public boolean hasPermission$who_touched_my_train(String playerName) {
+    public boolean hasUsePermission$who_touched_my_train(String playerName) {
         if (!this.hasOwner$who_touched_my_train()) {
+            return true;
+        }
+        CarriageAuthData authData = this.getAuthData$who_touched_my_train();
+        if (authData.getPermissionLevel() == TrainPermissionLevel.PROTECTED) {
             return true;
         }
 

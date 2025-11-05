@@ -3,6 +3,7 @@ package com.qwaecd.wtmt.mixin;
 
 import com.qwaecd.wtmt.init.AllModItems;
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
+import com.qwaecd.wtmt.item.TrainLock;
 import com.qwaecd.wtmt.item.key.TrainKey;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.actors.trainControls.ControlsInteractionBehaviour;
@@ -42,6 +43,7 @@ public abstract class ControlsInteractionBehaviourMixin {
         if (itemInHand.getItem() instanceof TrainKey trainKey) {
             trainKey.onControls(itemInHand, player, infoProvider);
             ci.setReturnValue(true);
+            return;
         }
 
         boolean hasOwner = infoProvider.hasOwner$who_touched_my_train();
@@ -57,11 +59,16 @@ public abstract class ControlsInteractionBehaviourMixin {
                     player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_owner"), true);
                 }
                 ci.setReturnValue(true);
+                return;
             }
+            TrainLock trainLock = (TrainLock) itemInHand.getItem();
+            trainLock.onRightClickControls(itemInHand, player, infoProvider);
+            ci.setReturnValue(true);
+            return;
         }
 
 
-        if (!infoProvider.hasPermission$who_touched_my_train(playerName)) {
+        if (!infoProvider.hasUsePermission$who_touched_my_train(playerName)) {
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
             ci.setReturnValue(true);
         }

@@ -1,18 +1,23 @@
 package com.qwaecd.wtmt.api;
 
-import com.qwaecd.wtmt.data.CarriageAuthData;
+import com.qwaecd.wtmt.data.IAuthDataAccessor;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
 public interface ITrainInfoProvider {
-    default CarriageAuthData getAuthData$who_touched_my_train() {
+    default IAuthDataAccessor getAuthData$who_touched_my_train() {
         throw new UnsupportedOperationException();
     }
     default UUID getEntityUUID$who_touched_my_train() {
         throw new UnsupportedOperationException();
     }
-    default boolean hasPermission$who_touched_my_train(String playerName) {
+
+    /**
+     * 是否有使用权限, 不包含修改权限的权限
+     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    default boolean hasUsePermission$who_touched_my_train(String playerName) {
         return true;
     }
     default boolean hasOwner$who_touched_my_train() {

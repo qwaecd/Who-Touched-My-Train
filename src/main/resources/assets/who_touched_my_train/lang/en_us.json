@@ -9,5 +9,6 @@
   "message.who_touched_my_train.set_public": "Train is now public",
   "message.who_touched_my_train.successfully_copied_key": "Successfully copied key",
   "message.who_touched_my_train.successfully_authorized": "Successfully authorized",
+  "message.who_touched_my_train.lock_state_changed": "Changed train lock state to: %s",
   "who_touched_my_train.item.gold_train_key.tooltip": "Owner: %s"
 }
