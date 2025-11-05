@@ -22,7 +22,7 @@ public class IronTrainKey extends TrainKey {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public @Nonnull InteractionResultHolder<ItemStack> use(Level level, @Nonnull Player player, @Nonnull InteractionHand usedHand) {
         if (level.isClientSide()) {
             return super.use(level, player, usedHand);
         }
@@ -36,9 +36,9 @@ public class IronTrainKey extends TrainKey {
 
     @Override
     public void onControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
-        if (!infoProvider.hasOwner$who_touched_my_train()) {
+        if (!infoProvider.hasOwner$who_touched_my_train())
             return;
-        }
+
         String playerName = player.getName().getString();
         CompoundTag tag = itemInHand.getTag();
         String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
@@ -48,9 +48,10 @@ public class IronTrainKey extends TrainKey {
             processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
             return;
         }
-        if (tag == null) {
+
+        if (infoProvider.hasUsePermission$who_touched_my_train(playerName) || tag == null)
             return;
-        }
+
         CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
         if (keyAuthTag.isEmpty()) {
             return;
@@ -71,7 +72,7 @@ public class IronTrainKey extends TrainKey {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag flag) {
+    public void appendHoverText(@Nonnull ItemStack itemStack, @Nullable Level level, @Nonnull List<Component> tooltipComponents, @Nonnull TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltipComponents, flag);
 
         CompoundTag authTag = itemStack.getTagElement(AuthComponentData.COMPONENT_NAME);

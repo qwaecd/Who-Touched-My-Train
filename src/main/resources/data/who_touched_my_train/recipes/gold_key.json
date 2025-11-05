@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "N": {
+      "item": "minecraft:gold_nugget"
+    },
+    "M": {
+      "item": "create:golden_sheet"
+    }
+  },
+  "pattern": [
+    "M# ",
+    "N  "
+  ],
+  "result": {
+    "item": "who_touched_my_train:gold_key",
+    "count": 4
+  }
+}
