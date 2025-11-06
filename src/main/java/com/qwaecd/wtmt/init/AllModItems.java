@@ -14,14 +14,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.qwaecd.wtmt.WhoTouchedMyTrain.MOD_ID;
 
 public final class AllModItems {
-    private static final Map<String, RegistryObject<Item>> itemMap = new HashMap<>();
+    private static final Map<String, RegistryObject<Item>> itemMap = new LinkedHashMap<>();
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
