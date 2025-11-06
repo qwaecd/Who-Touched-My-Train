@@ -1,6 +1,7 @@
 package com.qwaecd.wtmt.init;
 
 import com.qwaecd.wtmt.item.TrainLock;
+import com.qwaecd.wtmt.item.key.AdminTrainKey;
 import com.qwaecd.wtmt.item.key.GoldTrainKey;
 import com.qwaecd.wtmt.item.key.IronTrainKey;
 import net.minecraft.core.registries.Registries;
@@ -27,6 +28,7 @@ public final class AllModItems {
     public static final RegistryObject<Item> TRAIN_LOCK = register("train_lock", () -> new TrainLock(new Item.Properties()));
     public static final RegistryObject<Item> IRON_KEY = register("iron_key", () -> new IronTrainKey(new Item.Properties()));
     public static final RegistryObject<Item> GOLD_KEY = register("gold_key", () -> new GoldTrainKey(new Item.Properties()));
+    public static final RegistryObject<Item> ADMIN_KEY = register("admin_key", () -> new AdminTrainKey(new Item.Properties()));
 
 
     public static final RegistryObject<CreativeModeTab> ITEM_TAB = CREATIVE_MODE_TABS.register("wtmt_tab", () -> CreativeModeTab.builder()
