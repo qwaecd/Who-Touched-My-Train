@@ -1,7 +1,6 @@
 package com.qwaecd.wtmt.item.key;
 
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
-import com.qwaecd.wtmt.data.IAuthDataAccessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
