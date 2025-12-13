@@ -154,14 +154,11 @@ public class CarriageAuthData implements IAuthDataAccessor {
 
     public static class StringSyncHelper {
         public static String readString(FriendlyByteBuf buffer) {
-            int length = buffer.readInt();
-            return buffer.readUtf(length);
+            return buffer.readUtf();
         }
 
         public static void writeString(FriendlyByteBuf buffer, String value) {
-            int length = value.length();
-            buffer.writeInt(length);
-            buffer.writeUtf(value, length);
+            buffer.writeUtf(value);
         }
     }
 

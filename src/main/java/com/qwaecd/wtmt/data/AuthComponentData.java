@@ -17,8 +17,8 @@ public class AuthComponentData {
     public AuthComponentData(String ownerName, ITrainInfoProvider infoProvider) {
         this(
                 ownerName,
-                infoProvider.getEntityUUID$who_touched_my_train(),
-                infoProvider.getAuthData$who_touched_my_train().getGeneration()
+                infoProvider.getEntityUUID(),
+                infoProvider.getAuthData().getGeneration()
         );
     }
 

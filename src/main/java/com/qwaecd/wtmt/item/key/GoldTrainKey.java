@@ -15,12 +15,12 @@ public class GoldTrainKey extends TrainKey implements IKeyAction {
     @Override
     public void onControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
         String playerName = player.getName().getString();
-        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
+        String ownerName = infoProvider.getOwnerPlayerName();
         if (ownerName == null || !ownerName.equals(playerName)) {
             return;
         }
         // unlock
-        infoProvider.setPublic$who_touched_my_train();
+        infoProvider.setPublic();
         //noinspection resource
         if (!player.level().isClientSide()) {
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_public"), true);

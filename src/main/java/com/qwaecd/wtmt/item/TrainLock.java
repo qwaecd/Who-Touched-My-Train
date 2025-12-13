@@ -17,7 +17,7 @@ public class TrainLock extends Item {
 
     public void onRightClickControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
         String playerName = player.getName().getString();
-        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
+        String ownerName = infoProvider.getOwnerPlayerName();
         if (!playerName.equals(ownerName)) {
             return;
         }
@@ -28,7 +28,7 @@ public class TrainLock extends Item {
     }
 
     private void switchLockState(Player player,ITrainInfoProvider infoProvider) {
-        IAuthDataAccessor authData = infoProvider.getAuthData$who_touched_my_train();
+        IAuthDataAccessor authData = infoProvider.getAuthData();
         TrainPermissionLevel permissionLevel = authData.getPermissionLevel();
         if (permissionLevel == TrainPermissionLevel.PRIVATE) {
             authData.setPermissionLevel(TrainPermissionLevel.PROTECTED);

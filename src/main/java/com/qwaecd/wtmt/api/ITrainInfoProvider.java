@@ -5,41 +5,60 @@ import com.qwaecd.wtmt.data.IAuthDataAccessor;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public interface ITrainInfoProvider {
-    default IAuthDataAccessor getAuthData$who_touched_my_train() {
-        throw new UnsupportedOperationException();
-    }
-    default UUID getEntityUUID$who_touched_my_train() {
-        throw new UnsupportedOperationException();
+    default IAuthDataAccessor getAuthData() {
+        return getAuthData$who_touched_my_train();
     }
 
+    IAuthDataAccessor getAuthData$who_touched_my_train();
+
+    default UUID getEntityUUID() {
+        return getEntityUUID$who_touched_my_train();
+    }
+    UUID getEntityUUID$who_touched_my_train();
     /**
      * 是否有使用权限, 不包含修改权限的权限
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    default boolean hasUsePermission$who_touched_my_train(String playerName) {
-        return true;
+    default boolean hasUsePermission(String playerName) {
+        return hasUsePermission$who_touched_my_train(playerName);
     }
-    default boolean hasOwner$who_touched_my_train() {
-        return false;
+    boolean hasUsePermission$who_touched_my_train(String playerName);
+
+    default boolean hasOwner() {
+        return hasOwner$who_touched_my_train();
+    }
+    boolean hasOwner$who_touched_my_train();
+
+    @Nullable
+    default String getOwnerPlayerName() {
+        return getOwnerPlayerName$who_touched_my_train();
     }
     @Nullable
-    default String getOwnerPlayerName$who_touched_my_train() {
-        return null;
+    String getOwnerPlayerName$who_touched_my_train();
+
+    default void setOwnerPlayerName(String playerName) {
+        setOwnerPlayerName$who_touched_my_train(playerName);
     }
-    default void setOwnerPlayerName$who_touched_my_train(String playerName) {
-        throw new UnsupportedOperationException();
+    void setOwnerPlayerName$who_touched_my_train(String playerName);
+
+    default boolean hasAuthorizedPlayer(String playerName) {
+        return hasAuthorizedPlayer$who_touched_my_train(playerName);
     }
-    default boolean hasAuthorizedPlayer$who_touched_my_train(String playerName) {
-        return false;
+    boolean hasAuthorizedPlayer$who_touched_my_train(String playerName);
+
+    default void authorizePlayer(String playerName) {
+        authorizePlayer$who_touched_my_train(playerName);
     }
-    default void authorizePlayer$who_touched_my_train(String playerName) {
-        throw new UnsupportedOperationException();
+    void authorizePlayer$who_touched_my_train(String playerName);
+
+    default void deauthorizePlayer(String playerName) {
+        deauthorizePlayer$who_touched_my_train(playerName);
     }
-    default void deauthorizePlayer$who_touched_my_train(String playerName) {
-        throw new UnsupportedOperationException();
+    void deauthorizePlayer$who_touched_my_train(String playerName);
+
+    default void setPublic() {
+        setPublic$who_touched_my_train();
     }
-    default void setPublic$who_touched_my_train() {
-        throw new UnsupportedOperationException();
-    }
+    void setPublic$who_touched_my_train();
 }

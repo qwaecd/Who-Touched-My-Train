@@ -14,7 +14,7 @@ public class AdminTrainKey extends TrainKey implements IKeyAction {
 
     @Override
     public void onControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
-        if (!infoProvider.hasOwner$who_touched_my_train())
+        if (!infoProvider.hasOwner())
             return;
         //noinspection resource
         if (player.level().isClientSide()) {
@@ -23,16 +23,16 @@ public class AdminTrainKey extends TrainKey implements IKeyAction {
         if (player.isShiftKeyDown()) {
             // 直接解锁
 
-            infoProvider.setPublic$who_touched_my_train();
+            infoProvider.setPublic();
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.set_public"), true);
         } else {
             // 直接授权
             String playerName = player.getName().getString();
 
-            if (infoProvider.hasAuthorizedPlayer$who_touched_my_train(playerName))
+            if (infoProvider.hasAuthorizedPlayer(playerName))
                 return;
 
-            infoProvider.authorizePlayer$who_touched_my_train(playerName);
+            infoProvider.authorizePlayer(playerName);
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_authorized"), true);
         }
     }

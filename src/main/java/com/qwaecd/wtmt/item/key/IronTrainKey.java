@@ -36,12 +36,12 @@ public class IronTrainKey extends TrainKey {
 
     @Override
     public void onControls(@Nonnull ItemStack itemInHand, @Nonnull Player player, @Nonnull ITrainInfoProvider infoProvider) {
-        if (!infoProvider.hasOwner$who_touched_my_train())
+        if (!infoProvider.hasOwner())
             return;
 
         String playerName = player.getName().getString();
         CompoundTag tag = itemInHand.getTag();
-        String ownerName = infoProvider.getOwnerPlayerName$who_touched_my_train();
+        String ownerName = infoProvider.getOwnerPlayerName();
         AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
         if (playerName.equals(ownerName)) {
             // 刻钥匙
@@ -52,7 +52,7 @@ public class IronTrainKey extends TrainKey {
             return;
         }
 
-        if (infoProvider.hasAuthorizedPlayer$who_touched_my_train(playerName) || tag == null)
+        if (infoProvider.hasAuthorizedPlayer(playerName) || tag == null)
             return;
 
         CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
@@ -68,7 +68,7 @@ public class IronTrainKey extends TrainKey {
             //noinspection resource
             if (!player.level().isClientSide()) {
                 itemInHand.shrink(1);
-                infoProvider.authorizePlayer$who_touched_my_train(playerName);
+                infoProvider.authorizePlayer(playerName);
                 player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_authorized"), true);
             }
         }
