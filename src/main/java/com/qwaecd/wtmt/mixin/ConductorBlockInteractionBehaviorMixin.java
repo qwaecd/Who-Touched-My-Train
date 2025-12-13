@@ -2,8 +2,8 @@ package com.qwaecd.wtmt.mixin;
 
 
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
+import com.simibubi.create.api.behaviour.interaction.ConductorBlockInteractionBehavior;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.processing.burner.BlazeBurnerInteractionBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = BlazeBurnerInteractionBehaviour.class, remap = false)
-public abstract class BlazeBurnerInteractionBehaviourMixin {
+@Mixin(value = ConductorBlockInteractionBehavior.class, remap = false)
+public abstract class ConductorBlockInteractionBehaviorMixin {
     @Inject(
             method = "handlePlayerInteraction",
             at = @At("HEAD"),
@@ -26,7 +26,7 @@ public abstract class BlazeBurnerInteractionBehaviourMixin {
             return;
         }
         String playerName = player.getName().getString();
-        if (!infoProvider.hasUsePermission$who_touched_my_train(playerName)) {
+        if (!infoProvider.hasUsePermission(playerName)) {
             player.displayClientMessage(Component.translatable("message.who_touched_my_train.train_no_permission"), true);
             ci.setReturnValue(true);
         }

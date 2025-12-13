@@ -4,8 +4,8 @@
   "refmap": "who_touched_my_train.refmap.json",
   "plugin": "com.qwaecd.wtmt.mixin.MixinPlugin",
   "mixins": [
-    "BlazeBurnerInteractionBehaviourMixin",
     "CarriageContraptionEntityMixin",
+    "ConductorBlockInteractionBehaviorMixin",
     "ControlsInteractionBehaviourMixin"
   ],
   "client": [
