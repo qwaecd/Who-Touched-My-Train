@@ -9,7 +9,7 @@ public final class ModRL {
         return ResourceLocation.fromNamespaceAndPath(namespace, location);
     }
 
-    public static ResourceLocation InModSpace(String location) {
+    public static ResourceLocation inModSpace(String location) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, location);
     }
 }

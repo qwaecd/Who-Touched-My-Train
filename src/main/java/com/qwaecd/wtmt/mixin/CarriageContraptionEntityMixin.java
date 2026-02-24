@@ -8,6 +8,7 @@ import com.qwaecd.wtmt.network.AllSerializers;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,7 +28,7 @@ import java.util.UUID;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-@Mixin(value = CarriageContraptionEntity.class)
+@Mixin(value = CarriageContraptionEntity.class, remap = false)
 public abstract class CarriageContraptionEntityMixin extends OrientedContraptionEntity implements ITrainInfoProvider {
     @SuppressWarnings("WrongEntityDataParameterClass")
     @Unique
@@ -83,15 +84,17 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
 
     @Inject(
             method = "defineSynchedData",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            remap = false
     )
-    private void defineSynchedDataMixin(CallbackInfo ci) {
-        entityData.define(AUTH_DATA$who_touched_my_train, new CarriageAuthData());
+    private void defineSynchedDataMixin(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(AUTH_DATA$who_touched_my_train, new CarriageAuthData());
     }
 
     @Inject(
             method = "onSyncedDataUpdated",
-            at = @At("TAIL")
+            at = @At("TAIL"),
+            remap = false
     )
     private void onSyncedDataUpdatedMixin(EntityDataAccessor<?> key, CallbackInfo ci) {
         if (AUTH_DATA$who_touched_my_train.equals(key)) {
@@ -100,7 +103,7 @@ public abstract class CarriageContraptionEntityMixin extends OrientedContraption
     }
 
     @Inject(method = "writeAdditional", at = @At("TAIL"), remap = false)
-    private void writeAdditionalMixin(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
+    private void writeAdditionalMixin(CompoundTag compound, HolderLookup.Provider registries, boolean spawnPacket, CallbackInfo ci) {
         CarriageAuthData authData = this.getAuthData$who_touched_my_train();
         authData.write(compound);
     }

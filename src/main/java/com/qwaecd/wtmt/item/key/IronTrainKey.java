@@ -3,13 +3,16 @@ package com.qwaecd.wtmt.item.key;
 import com.qwaecd.wtmt.api.ITrainInfoProvider;
 import com.qwaecd.wtmt.data.AuthComponentData;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
@@ -40,9 +43,10 @@ public class IronTrainKey extends TrainKey {
             return;
 
         String playerName = player.getName().getString();
-        CompoundTag tag = itemInHand.getTag();
+
         String ownerName = infoProvider.getOwnerPlayerName();
         AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
+        CustomData customData = itemInHand.get(DataComponents.CUSTOM_DATA);
         if (playerName.equals(ownerName)) {
             // 刻钥匙
             //noinspection resource
@@ -52,8 +56,10 @@ public class IronTrainKey extends TrainKey {
             return;
         }
 
-        if (infoProvider.hasAuthorizedPlayer(playerName) || tag == null)
+        if (infoProvider.hasAuthorizedPlayer(playerName) || customData == null) {
             return;
+        }
+        CompoundTag tag = customData.getUnsafe();
 
         CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
         if (keyAuthTag.isEmpty()) {
@@ -74,10 +80,13 @@ public class IronTrainKey extends TrainKey {
         }
     }
 
-    @Override
-    public void appendHoverText(@Nonnull ItemStack itemStack, @Nullable Level level, @Nonnull List<Component> tooltipComponents, @Nonnull TooltipFlag flag) {
-        super.appendHoverText(itemStack, level, tooltipComponents, flag);
-
+    public void appendHoverText(
+            ItemStack itemStack,
+            Item.TooltipContext context,
+            List<Component> tooltipComponents,
+            TooltipFlag tooltipFlag
+    ) {
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
         CompoundTag authTag = itemStack.getTagElement(AuthComponentData.COMPONENT_NAME);
         if (authTag == null) {
             return;

@@ -9,16 +9,16 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Consumer;
 
 import static com.qwaecd.wtmt.WhoTouchedMyTrain.MOD_ID;
 
 public final class AllModItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, MOD_ID);
 
     public static final ItemEntry<TrainLock> TRAIN_LOCK = register("train_lock", TrainLock::new);
     public static final ItemEntry<IronTrainKey> IRON_KEY = register("iron_key", IronTrainKey::new);

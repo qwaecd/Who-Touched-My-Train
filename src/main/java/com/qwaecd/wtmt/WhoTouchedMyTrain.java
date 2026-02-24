@@ -8,9 +8,9 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 
 @Mod(WhoTouchedMyTrain.MOD_ID)
 public class WhoTouchedMyTrain
@@ -26,9 +26,8 @@ public class WhoTouchedMyTrain
                     new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
                             .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
             );
-    public WhoTouchedMyTrain(FMLJavaModLoadingContext context)
+    public WhoTouchedMyTrain(IEventBus modEventBus, ModContainer modContainer)
     {
-        IEventBus modEventBus = context.getModEventBus();
         AllModItems.registerAllItems();
         AllSerializers.register(modEventBus);
         REGISTRATE.registerEventListeners(modEventBus);

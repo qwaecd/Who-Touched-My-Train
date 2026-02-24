@@ -78,6 +78,16 @@ public class CarriageAuthData implements IAuthDataAccessor {
 //        System.out.println("Read CarriageAuthData: owner=" + this.ownerPlayerName + ", authorizedPlayers=" + this.authorizedPlayers + ", permissionLevel=" + this.permissionLevel);
     }
 
+    public static CarriageAuthData decode(FriendlyByteBuf buffer) {
+        CarriageAuthData data = new CarriageAuthData();
+        data.read(buffer);
+        return data;
+    }
+
+    public static void encode(FriendlyByteBuf buffer, CarriageAuthData data) {
+        data.write(buffer);
+    }
+
     public CarriageAuthData copy() {
         CarriageAuthData data = new CarriageAuthData();
         data.permissionLevel = this.permissionLevel;
