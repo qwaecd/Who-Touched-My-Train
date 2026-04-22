@@ -46,26 +46,23 @@ public class IronTrainKey extends TrainKey {
 
         String ownerName = infoProvider.getOwnerPlayerName();
         AuthComponentData trainAuthData = new AuthComponentData(ownerName, infoProvider);
-        CustomData customData = itemInHand.get(DataComponents.CUSTOM_DATA);
         if (playerName.equals(ownerName)) {
             // 刻钥匙
             //noinspection resource
             if (!player.level().isClientSide()) {
-                processKey(trainAuthData, itemInHand.getOrCreateTagElement(AuthComponentData.COMPONENT_NAME), player);
+                processKey(trainAuthData, itemInHand, player);
             }
             return;
         }
 
-        if (infoProvider.hasAuthorizedPlayer(playerName) || customData == null) {
+        if (infoProvider.hasAuthorizedPlayer(playerName)) {
             return;
         }
-        CompoundTag tag = customData.getUnsafe();
+        AuthComponentData keyAuthData = readAuthComponent(itemInHand);
+        if (keyAuthData == null) {
+            return;
+        }
 
-        CompoundTag keyAuthTag = tag.getCompound(AuthComponentData.COMPONENT_NAME);
-        if (keyAuthTag.isEmpty()) {
-            return;
-        }
-        AuthComponentData keyAuthData = AuthComponentData.read(keyAuthTag);
         if (trainAuthData.isOverdue(keyAuthData.getGeneration())) {
             return;
         }
@@ -86,20 +83,19 @@ public class IronTrainKey extends TrainKey {
             List<Component> tooltipComponents,
             TooltipFlag tooltipFlag
     ) {
-        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
-        CompoundTag authTag = itemStack.getTagElement(AuthComponentData.COMPONENT_NAME);
-        if (authTag == null) {
+        AuthComponentData authData = readAuthComponent(itemStack);
+        if (authData == null) {
             return;
         }
-        String ownerName = authTag.getString(AuthComponentData.OWNER_NAME);
+        String ownerName = authData.getOwnerName();
         tooltipComponents.add(
                 Component.translatable("who_touched_my_train.item.gold_train_key.tooltip", ownerName)
                         .withStyle(ChatFormatting.AQUA)
         );
-        if(flag.isAdvanced()) {
+        if (tooltipFlag.isAdvanced()) {
             // F3 + H
             tooltipComponents.add(
-                    Component.literal("Generation: " + authTag.getLong(AuthComponentData.GENERATION))
+                    Component.literal("Generation: " + authData.getGeneration())
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -107,25 +103,58 @@ public class IronTrainKey extends TrainKey {
 
     @Override
     public boolean isFoil(ItemStack itemStack) {
-        CompoundTag authTag = itemStack.getTagElement(AuthComponentData.COMPONENT_NAME);
-        return authTag != null;
+        return readAuthComponent(itemStack) != null;
     }
 
-    private void processKey(AuthComponentData authData, CompoundTag authTag, Player player) {
+    private void processKey(AuthComponentData authData, ItemStack itemStack, Player player) {
         // 刻钥匙
-        authData.write(authTag);
+        writeAuthComponent(itemStack, authData);
         player.displayClientMessage(Component.translatable("message.who_touched_my_train.successfully_copied_key"), true);
     }
 
     private void clearKey(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getTag();
-        if (tag != null) {
-            tag.remove(AuthComponentData.COMPONENT_NAME);
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return;
         }
+        CompoundTag tag = customData.getUnsafe().copy();
+        tag.remove(AuthComponentData.COMPONENT_NAME);
+        if (tag.isEmpty()) {
+            itemStack.remove(DataComponents.CUSTOM_DATA);
+            return;
+        }
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
     private boolean verify(AuthComponentData trainAuthData, AuthComponentData keyAuthData) {
         return trainAuthData.getOwnerName().equals(keyAuthData.getOwnerName())
                 && trainAuthData.getCarriageUUID().equals(keyAuthData.getCarriageUUID());
+    }
+
+    @Nullable
+    private AuthComponentData readAuthComponent(ItemStack itemStack) {
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return null;
+        }
+        CompoundTag authTag = customData.getUnsafe().getCompound(AuthComponentData.COMPONENT_NAME);
+        if (authTag.isEmpty()) {
+            return null;
+        }
+        return AuthComponentData.read(authTag);
+    }
+
+    private void writeAuthComponent(ItemStack itemStack, AuthComponentData authData) {
+        CompoundTag customDataTag = getCustomDataTag(itemStack);
+        customDataTag.put(AuthComponentData.COMPONENT_NAME, authData.toComponentTag());
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(customDataTag));
+    }
+
+    private CompoundTag getCustomDataTag(ItemStack itemStack) {
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return new CompoundTag();
+        }
+        return customData.getUnsafe().copy();
     }
 }
